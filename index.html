@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genspark x CBRE Science & Innovation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0F172A;
+            --bg-secondary: #1E293B;
+            --bg-tertiary: #334155;
+            --accent-blue: #38BDF8;
+            --accent-teal: #06B6D4;
+            --accent-green: #003F2D;
+            --text-primary: #FFFFFF;
+            --text-secondary: #CBD5E1;
+            --text-muted: #94A3B8;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Geometric Pattern Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Fixed Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(56, 189, 248, 0.1);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            padding: 0.75rem 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-teal) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-blue);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Sections */
+        section {
+            position: relative;
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Hero Section */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding-top: 8rem;
+            position: relative;
+        }
+
+        .built-badge {
+            position: absolute;
+            top: 6rem;
+            right: 2rem;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--accent-blue);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+        }
+
+        .hero-title {
+            font-size: 4.5rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-teal) 50%, var(--text-primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 4rem;
+            max-width: 900px;
+            font-weight: 400;
+        }
+
+        .stat-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .stat-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(56, 189, 248, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(56, 189, 248, 0.2);
+            border-color: var(--accent-blue);
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--accent-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Section Headers */
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        /* Team Section */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .team-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(56, 189, 248, 0.15);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .team-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-blue);
+            box-shadow: 0 10px 40px rgba(56, 189, 248, 0.15);
+        }
+
+        .team-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-teal) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--bg-primary);
+        }
+
+        .team-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .team-title {
+            font-size: 1rem;
+            color: var(--accent-blue);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .team-description {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Use Cases Section */
+        .usecase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Showcase Section */
+        .showcase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 3rem;
+        }
+
+        .showcase-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(56, 189, 248, 0.15);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .showcase-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-blue);
+            box-shadow: 0 10px 40px rgba(56, 189, 248, 0.2);
+        }
+
+        .showcase-image {
+            width: 100%;
+            height: 350px;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+            border-bottom: 1px solid rgba(56, 189, 248, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .showcase-image iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            pointer-events: none;
+            transform: scale(0.8);
+            transform-origin: center;
+        }
+
+        .showcase-content {
+            padding: 2.5rem;
+        }
+
+        .showcase-tag {
+            display: inline-block;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: var(--accent-blue);
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .showcase-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .showcase-description {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .showcase-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .showcase-link:hover {
+            color: var(--accent-teal);
+            gap: 0.75rem;
+        }
+
+        .usecase-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(56, 189, 248, 0.15);
+            border-radius: 16px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .usecase-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-blue);
+            box-shadow: 0 10px 40px rgba(56, 189, 248, 0.15);
+        }
+
+        .usecase-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .usecase-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .usecase-description {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .usecase-metric {
+            padding: 1rem;
+            background: rgba(56, 189, 248, 0.1);
+            border-left: 3px solid var(--accent-blue);
+            border-radius: 4px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--accent-blue);
+        }
+
+        /* Case Study Section */
+        #case-study {
+            background: rgba(30, 41, 59, 0.3);
+            border-top: 1px solid rgba(56, 189, 248, 0.1);
+            border-bottom: 1px solid rgba(56, 189, 248, 0.1);
+        }
+
+        .case-columns {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .case-column {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(56, 189, 248, 0.15);
+            border-radius: 16px;
+            padding: 2.5rem;
+        }
+
+        .case-column-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+            margin-bottom: 1rem;
+        }
+
+        .case-column-text {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .dashboard-mockup {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+            border: 2px solid rgba(56, 189, 248, 0.2);
+            border-radius: 16px;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-mockup::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .dashboard-caption {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            text-align: center;
+            font-style: italic;
+            padding: 0 2rem;
+        }
+
+        /* Stats Section */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .stat-number {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-teal) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .stat-description {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* What's Next Section */
+        .next-columns {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+        }
+
+        .next-column {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(56, 189, 248, 0.15);
+            border-radius: 16px;
+            padding: 3rem;
+        }
+
+        .next-column-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+            margin-bottom: 2rem;
+        }
+
+        .next-column ul {
+            list-style: none;
+        }
+
+        .next-column li {
+            padding-left: 2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .next-column li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent-blue);
+            font-weight: 700;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(15, 23, 42, 0.8);
+            border-top: 1px solid rgba(56, 189, 248, 0.1);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer-address {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .footer-contact {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-contact a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-contact a:hover {
+            color: var(--accent-teal);
+        }
+
+        .footer-note {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 2rem;
+        }
+
+        /* Floating Badge */
+        .floating-badge {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: rgba(56, 189, 248, 0.15);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--accent-blue);
+            z-index: 999;
+            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.2);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .stat-cards,
+            .team-grid,
+            .usecase-grid,
+            .showcase-grid,
+            .case-columns,
+            .stats-row,
+            .next-columns {
+                grid-template-columns: 1fr;
+            }
+
+            .built-badge {
+                position: static;
+                margin-bottom: 2rem;
+            }
+
+            section {
+                padding: 4rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Fixed Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">Genspark × CBRE</div>
+            <ul class="nav-links">
+                <li><a href="#hero">Overview</a></li>
+                <li><a href="#team">Team</a></li>
+                <li><a href="#difference">The Difference</a></li>
+                <li><a href="#usecases">Use Cases</a></li>
+                <li><a href="#showcases">Showcases</a></li>
+                <li><a href="#case-study">Case Study</a></li>
+                <li><a href="#stats">Impact</a></li>
+                <li><a href="#next">Partnership</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="built-badge">✦ This presentation was built using Genspark</div>
+        <h1 class="hero-title">Genspark × CBRE<br>Science & Innovation</h1>
+        <p class="hero-subtitle">How a 6-person commercial real estate team turned Genspark into their competitive advantage</p>
+        
+        <div class="stat-cards">
+            <div class="stat-card">
+                <div class="stat-icon">🏢</div>
+                <div class="stat-value">20+</div>
+                <div class="stat-label">Active Listings</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-value">$2B+</div>
+                <div class="stat-label">Portfolio Value</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🤖</div>
+                <div class="stat-value">15+</div>
+                <div class="stat-label">AI Tenants Represented</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team">
+        <div class="section-header">
+            <h2 class="section-title">The Moran Team | CBRE Science & Innovation</h2>
+            <p class="section-subtitle">San Francisco Peninsula | AI, Life Sciences, Biotech, R&D</p>
+        </div>
+
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="team-avatar">MM</div>
+                <h3 class="team-name">Mike Moran</h3>
+                <div class="team-title">Vice Chairman</div>
+                <p class="team-description">Team Lead, Institutional Relationships, 30+ Years. Uses Genspark for ownership reporting and institutional client communications.</p>
+            </div>
+
+            <div class="team-card">
+                <div class="team-avatar">CM</div>
+                <h3 class="team-name">Charlie Moran</h3>
+                <div class="team-title">Vice President</div>
+                <p class="team-description">Deal Execution, Automation Architect, AI Workflow Strategy. Power user: market research, financial modeling, pitch decks, prospecting automation.</p>
+            </div>
+
+            <div class="team-card">
+                <div class="team-avatar">SF</div>
+                <h3 class="team-name">Shane Forker</h3>
+                <div class="team-title">Associate</div>
+                <p class="team-description">Market Intelligence, Cold Outreach, Daily Genspark Power User. Generates personalized outreach sequences for 530+ AI and biotech prospects.</p>
+            </div>
+
+            <div class="team-card">
+                <div class="team-avatar">IB</div>
+                <h3 class="team-name">Isabelle Baney</h3>
+                <div class="team-title">Coordinator</div>
+                <p class="team-description">Marketing Campaigns, Client Deliverables, Email Strategy. Creates marketing collateral, email campaigns, and project coordination documents.</p>
+            </div>
+
+            <div class="team-card">
+                <div class="team-avatar">DM</div>
+                <h3 class="team-name">Duke Moran</h3>
+                <div class="team-title">Tenant Strategist (Q1 2026)</div>
+                <p class="team-description">VC-Backed Startup Outreach, AI/Tech Targeting. Leveraging Genspark for scaling prospect research and deal pipeline development.</p>
+            </div>
+
+            <div class="team-card">
+                <div class="team-avatar">MD</div>
+                <h3 class="team-name">Miles DeLong</h3>
+                <div class="team-title">Senior Associate</div>
+                <p class="team-description">Peninsula Tenant Rep, Downtown Market Expert. Uses Genspark for competitive analysis and tenant-focused market positioning.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Genspark Difference Section -->
+    <section id="difference" style="background: rgba(30, 41, 59, 0.3); border-top: 1px solid rgba(56, 189, 248, 0.1); border-bottom: 1px solid rgba(56, 189, 248, 0.1);">
+        <div class="section-header">
+            <h2 class="section-title">The Genspark Difference</h2>
+            <p class="section-subtitle">Democratizing technical capabilities for commercial real estate professionals</p>
+        </div>
+
+        <div style="max-width: 1000px; margin: 0 auto;">
+            <div style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(56, 189, 248, 0.15); border-radius: 16px; padding: 3rem; margin-bottom: 3rem;">
+                <h3 style="font-size: 1.75rem; font-weight: 700; color: var(--accent-blue); margin-bottom: 2rem; text-align: center;">Before Genspark: Impossible Without Outside Help</h3>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+                    <div style="text-align: center; padding: 1.5rem;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">❌</div>
+                        <h4 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">Hire Developers</h4>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem;">$15,000+ per custom tool<br>4-6 weeks lead time</p>
+                    </div>
+                    
+                    <div style="text-align: center; padding: 1.5rem;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">❌</div>
+                        <h4 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">Hire Designers</h4>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem;">$5,000+ per presentation<br>2-3 weeks turnaround</p>
+                    </div>
+                    
+                    <div style="text-align: center; padding: 1.5rem;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">❌</div>
+                        <h4 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">Static PDFs</h4>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem;">No interactivity<br>Generic templates</p>
+                    </div>
+                </div>
+                
+                <p style="text-align: center; color: var(--text-secondary); font-size: 1.1rem; font-style: italic; padding: 1rem; border-left: 3px solid rgba(56, 189, 248, 0.3); margin: 0 auto; max-width: 800px;">
+                    "As a commercial real estate broker, I had zero coding experience. Creating custom interactive tools was completely out of reach without spending tens of thousands on outside developers."
+                </p>
+            </div>
+
+            <div style="background: linear-gradient(135deg, rgba(56, 189, 248, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%); border: 2px solid rgba(56, 189, 248, 0.3); border-radius: 16px; padding: 3rem;">
+                <h3 style="font-size: 1.75rem; font-weight: 700; color: var(--accent-blue); margin-bottom: 2rem; text-align: center;">With Genspark: Anyone Can Build Powerful Tools</h3>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+                    <div style="text-align: center; padding: 1.5rem;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">✅</div>
+                        <h4 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">No Code Required</h4>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem;">Describe what you want<br>Genspark builds it</p>
+                    </div>
+                    
+                    <div style="text-align: center; padding: 1.5rem;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">⚡</div>
+                        <h4 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">Hours Not Weeks</h4>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem;">Custom tools in hours<br>Iterate in minutes</p>
+                    </div>
+                    
+                    <div style="text-align: center; padding: 1.5rem;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">💎</div>
+                        <h4 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">Professional Quality</h4>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem;">Design agency results<br>No technical team needed</p>
+                    </div>
+                </div>
+
+                <div style="background: rgba(15, 23, 42, 0.6); border-radius: 12px; padding: 2rem; margin-top: 2rem;">
+                    <h4 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1.5rem; color: var(--text-primary);">Real Example: The Commute Analysis Tool</h4>
+                    <div style="display: grid; gap: 1rem;">
+                        <div style="display: flex; align-items: start; gap: 1rem;">
+                            <div style="color: var(--accent-blue); font-weight: 700; font-size: 1.5rem;">1</div>
+                            <div>
+                                <strong style="color: var(--text-primary);">The Challenge:</strong>
+                                <span style="color: var(--text-secondary);"> Client needed to understand Bay Area commute patterns for their expanding team</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: start; gap: 1rem;">
+                            <div style="color: var(--accent-blue); font-weight: 700; font-size: 1.5rem;">2</div>
+                            <div>
+                                <strong style="color: var(--text-primary);">The Old Way:</strong>
+                                <span style="color: var(--text-secondary);"> Hire developer ($15K), wait 4-6 weeks, hope it meets expectations</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: start; gap: 1rem;">
+                            <div style="color: var(--accent-blue); font-weight: 700; font-size: 1.5rem;">3</div>
+                            <div>
+                                <strong style="color: var(--text-primary);">The Genspark Way:</strong>
+                                <span style="color: var(--text-secondary);"> Described the need in plain English, Genspark built interactive tool in 4 hours</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: start; gap: 1rem;">
+                            <div style="color: var(--accent-blue); font-weight: 700; font-size: 1.5rem;">4</div>
+                            <div>
+                                <strong style="color: var(--text-primary);">The Result:</strong>
+                                <span style="color: var(--text-secondary);"> Client requested updates continuously, each change took minutes not weeks</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <p style="text-align: center; color: var(--text-primary); font-size: 1.1rem; font-weight: 600; padding: 2rem 1rem 0; max-width: 800px; margin: 0 auto;">
+                    "I went from being completely dependent on outside technical resources to building professional-grade interactive tools myself. Genspark leveled the playing field."
+                </p>
+            </div>
+
+            <div style="margin-top: 3rem; text-align: center;">
+                <div style="display: inline-block; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 2rem 3rem;">
+                    <h4 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; color: var(--accent-blue);">Cost Savings Per Project</h4>
+                    <div style="font-size: 3rem; font-weight: 900; background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-teal) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.5rem;">$15,000+</div>
+                    <p style="color: var(--text-secondary); font-size: 1rem;">Saved on every custom tool we build with Genspark vs. hiring developers</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section -->
+    <section id="usecases">
+        <div class="section-header">
+            <h2 class="section-title">Genspark in the Field</h2>
+            <p class="section-subtitle">Real workflows. Real results. Built in Genspark.</p>
+        </div>
+
+        <div class="usecase-grid">
+            <div class="usecase-card">
+                <div class="usecase-icon">🔍</div>
+                <h3 class="usecase-title">Market Research & Comp Analysis</h3>
+                <p class="usecase-description">Submarket data synthesis, vacancy trends, lease comp sets pulled and formatted in minutes instead of hours.</p>
+                <div class="usecase-metric">Research cycle: 3 hours → 30 minutes</div>
+            </div>
+
+            <div class="usecase-card">
+                <div class="usecase-icon">📊</div>
+                <h3 class="usecase-title">Client Pitch Materials</h3>
+                <p class="usecase-description">Interactive dashboards, competitive positioning decks, and transportation commute analysis maps built for ownership pitches.</p>
+                <div class="usecase-metric">Deliverable production: 2 days → 4 hours</div>
+            </div>
+
+            <div class="usecase-card">
+                <div class="usecase-icon">🎯</div>
+                <h3 class="usecase-title">Prospect Research & Outreach</h3>
+                <p class="usecase-description">530+ company pipeline with AI-generated personalized outreach based on funding rounds, hiring signals, and lease expirations.</p>
+                <div class="usecase-metric">Outreach personalization: 15 min/prospect → 2 min</div>
+            </div>
+
+            <div class="usecase-card">
+                <div class="usecase-icon">💰</div>
+                <h3 class="usecase-title">Financial Modeling</h3>
+                <p class="usecase-description">Net effective rent analysis, TI amortization, DCF models, and lease scenario comparisons.</p>
+                <div class="usecase-metric">Model build time: 45 min → 10 min</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Showcases Section -->
+    <section id="showcases">
+        <div class="section-header">
+            <h2 class="section-title">Built with Genspark</h2>
+            <p class="section-subtitle">Interactive tools and experiences created by the CBRE team</p>
+        </div>
+
+        <div class="showcase-grid">
+            <div class="showcase-card">
+                <div class="showcase-image">
+                    <iframe src="https://moranteam.github.io/odyssey-location-intelligence/" loading="lazy"></iframe>
+                </div>
+                <div class="showcase-content">
+                    <span class="showcase-tag">Client Deliverable</span>
+                    <h3 class="showcase-title">Tech Company - Commute Analysis Use Case</h3>
+                    <p class="showcase-description">Interactive Bay Area commute analysis tool built for a tech company tenant rep assignment. Features live transit data, talent pool analytics, and cost comparisons across Peninsula locations. Client kept requesting updates which took minutes to deploy thanks to Genspark.</p>
+                    <a href="https://moranteam.github.io/odyssey-location-intelligence/" target="_blank" class="showcase-link">
+                        View Live Tool →
+                    </a>
+                </div>
+            </div>
+
+            <div class="showcase-card">
+                <div class="showcase-image">
+                    <iframe src="https://moranteam.github.io/golf-bach-party/" loading="lazy"></iframe>
+                </div>
+                <div class="showcase-content">
+                    <span class="showcase-tag">Personal Project</span>
+                    <h3 class="showcase-title">Golf Trip Planner 2025</h3>
+                    <p class="showcase-description">Bachelor party golf trip planning tool with 20 curated destinations, interactive flight maps, cost calculators, and shortlist features. Built to test Genspark's capabilities outside of work and the result rivals professional development teams.</p>
+                    <a href="https://moranteam.github.io/golf-bach-party/" target="_blank" class="showcase-link">
+                        View Live Tool →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Case Study Section -->
+    <section id="case-study">
+        <div class="section-header">
+            <h2 class="section-title">Case Study: Winning the 181 2nd Avenue Listing</h2>
+            <p class="section-subtitle">73,587 SF Office | Downtown San Mateo | Lincoln Properties</p>
+        </div>
+
+        <div class="case-columns">
+            <div class="case-column">
+                <h3 class="case-column-title">The Challenge</h3>
+                <p class="case-column-text">Competitive pitch against multiple brokerages for a 73,587 SF Class B+ office property. Ownership group (Mrs. Rosanna Gaw) required institutional-quality materials and a data-driven leasing strategy. Short timeline to differentiate.</p>
+            </div>
+
+            <div class="case-column">
+                <h3 class="case-column-title">The Genspark Solution</h3>
+                <p class="case-column-text">Team used Genspark to build: (1) Interactive leasing analytics dashboard with occupancy tracking, tenant pipeline, and competitive benchmarking across 12 comparable properties. (2) Transportation commute analysis mapping 5 Bay Area origins with drive times, Caltrain schedules, and talent pool data. (3) Market positioning analysis comparing 181 2nd Ave's parking ratio, rate positioning, and vacancy against the full Downtown San Mateo competitive set.</p>
+            </div>
+
+            <div class="case-column">
+                <h3 class="case-column-title">The Result</h3>
+                <p class="case-column-text">CBRE selected as exclusive listing agent. Ownership cited the quality and depth of our analytical materials as a key differentiator. The deliverables we built in Genspark are now being used as the active leasing toolkit for the property.</p>
+            </div>
+        </div>
+
+        <div class="dashboard-mockup">
+            <p class="dashboard-caption">The 181 2nd Ave Leasing Dashboard, built in Genspark, is now the property's primary marketing and analytics tool.</p>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section id="stats">
+        <div class="section-header">
+            <h2 class="section-title">By The Numbers</h2>
+        </div>
+
+        <div class="stats-row">
+            <div class="stat-item">
+                <span class="stat-number" data-target="85">0</span>
+                <p class="stat-description">Faster first-draft generation for client deliverables</p>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" data-target="40">0</span>
+                <p class="stat-description">Reduction in research cycle time</p>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" data-target="530">0</span>
+                <p class="stat-description">Prospects with AI-generated personalized outreach</p>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" data-target="20">0</span>
+                <p class="stat-description">Properties with Genspark-assisted marketing materials</p>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" data-target="2" data-prefix="$" data-suffix="B+">0</span>
+                <p class="stat-description">Aggregate portfolio value under team management</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- What's Next Section -->
+    <section id="next">
+        <div class="section-header">
+            <h2 class="section-title">The Expansion Opportunity</h2>
+        </div>
+
+        <div class="next-columns">
+            <div class="next-column">
+                <h3 class="next-column-title">Scale Path</h3>
+                <ul>
+                    <li>CBRE's Science & Innovation Practice operates across 6 US offices with identical workflows</li>
+                    <li>National tenant rep division: ~30 brokers in major metros running the same research and pitch processes</li>
+                    <li>Enterprise deployment potential across CBRE's 500+ US offices</li>
+                    <li>Genspark could become the standard AI platform for CRE deliverable production</li>
+                </ul>
+            </div>
+
+            <div class="next-column">
+                <h3 class="next-column-title">Partnership Vision</h3>
+                <ul>
+                    <li>CRE-specific template library: market surveys, LOIs, ownership reports, stacking plans</li>
+                    <li>Integration with commercial real estate data platforms (CoStar, VTS, Airtable)</li>
+                    <li>Custom agent workflows for lease analysis, deal pipeline management, and prospect scoring</li>
+                    <li>Joint case study for Genspark marketing (mutually agreed)</li>
+                    <li>CRE vertical as a new Genspark go-to-market category</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p class="footer-title">Prepared by CBRE Science & Innovation</p>
+            <p class="footer-address">400 Hamilton Ave, 4th Floor | Palo Alto, CA 94301</p>
+            <p class="footer-contact">
+                <a href="mailto:info@cbre.com">Contact CBRE</a>
+            </p>
+            <p class="footer-note">This presentation was built using Genspark.</p>
+        </div>
+    </footer>
+
+    <!-- Floating Badge -->
+    <div class="floating-badge">✦ Built with Genspark</div>
+
+    <script>
+        // Intersection Observer for fade-in animations
+        const sections = document.querySelectorAll('section');
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            sectionObserver.observe(section);
+        });
+
+        // Counter animation
+        function animateCounter(element) {
+            const target = parseInt(element.getAttribute('data-target'));
+            const prefix = element.getAttribute('data-prefix') || '';
+            const suffix = element.getAttribute('data-suffix') || '%';
+            const duration = 2000;
+            const increment = target / (duration / 16);
+            let current = 0;
+
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = prefix + target + suffix;
+                    clearInterval(timer);
+                } else {
+                    element.textContent = prefix + Math.floor(current) + suffix;
+                }
+            }, 16);
+        }
+
+        // Counter observer
+        const counters = document.querySelectorAll('.stat-number');
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && entry.target.textContent === '0') {
+                    animateCounter(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        counters.forEach(counter => {
+            counterObserver.observe(counter);
+        });
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offset = 80;
+                    const targetPosition = target.offsetTop - offset;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
